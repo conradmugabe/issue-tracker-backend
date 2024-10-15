@@ -3,7 +3,10 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
 
+from src.issues.controller import IssuesController
 
+
+issues_controller = IssuesController()
 router = APIRouter(prefix="/api/v1/issues", tags=["issues"])
 
 
@@ -22,7 +25,7 @@ class UpdateIssueRequest(BaseModel):
 @router.post("/issues")
 def create_issue(data: CreateIssueRequest):
     """create issue"""
-    return {"title": data.title, "id": 1}
+    return issues_controller.create_issue({"title": data.title})
 
 
 @router.get("/issues")

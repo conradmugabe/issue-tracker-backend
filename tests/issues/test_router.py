@@ -6,9 +6,11 @@ from fastapi.testclient import TestClient
 def test_create_issue(test_client: TestClient):
     """test create issue"""
     response = test_client.post("/api/v1/issues/issues", json={"title": "test"})
+    json_response = response.json()
 
     assert response.status_code == 200
-    assert response.json() == {"title": "test", "id": 1}
+    assert json_response.get("title") == "test"
+    assert json_response.get("id")
 
 
 def test_get_issues(test_client: TestClient):
