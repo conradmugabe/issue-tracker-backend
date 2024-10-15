@@ -1,7 +1,8 @@
 """issues service"""
 
 from typing import TypedDict
-from uuid import uuid4 as uuid
+
+from src.issues.storage.database_service import DatabaseService
 
 
 class UpdateIssue(TypedDict):
@@ -25,38 +26,31 @@ class Issue(CreateIssue):
 class IssuesService:
     """issues service"""
 
-    def __init__(self):
-        self.__issues: list[Issue] = []
+    def __init__(self, database_service: DatabaseService):
+        self.__database_service = database_service
 
     def create_issue(self, data: CreateIssue) -> Issue:
         """create issue"""
-        issue: Issue = {"id": str(uuid()), "title": data.get("title")}
-        self.__issues.append(issue)
+        issue = self.__database_service.save_issue({"title": data.get("title")})
 
         return issue
 
     def get_issue(self, issue_id: str) -> Issue | None:
         """get issue"""
-        for issue in self.__issues:
-            if issue["id"] == issue_id:
-                return issue
+        issue = self.__database_service.get_issue_by_id(issue_id)
 
-        return None
+        return issue
 
     def update_issue(self, issue_id: str, data: UpdateIssue) -> Issue | None:
         """update issue"""
-        for index, issue in enumerate(self.__issues):
-            if issue["id"] == issue_id:
-                self.__issues[index] = {**issue, **data}
-                return self.__issues[index]
+        issue = self.__database_service.update_issue_by_id(
+            issue_id, {"title": data.get("title")}
+        )
 
-        return None
+        return issue
 
     def delete_issue(self, issue_id: str) -> Issue | None:
         """delete issue"""
-        for index, issue in enumerate(self.__issues):
-            if issue["id"] == issue_id:
-                del self.__issues[index]
-                return issue
+        issue = self.__database_service.delete_issue_by_id(issue_id)
 
-        return None
+        return issue

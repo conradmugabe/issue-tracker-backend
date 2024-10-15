@@ -5,9 +5,11 @@ from pydantic import BaseModel
 
 from src.issues.service import IssuesService
 from src.issues.controller import IssuesController
+from src.issues.storage.in_memory_database_service import IssuesInMemoryDatabaseService
 
 
-issues_service = IssuesService()
+database_service = IssuesInMemoryDatabaseService()
+issues_service = IssuesService(database_service)
 issues_controller = IssuesController(service=issues_service)
 router = APIRouter(prefix="/api/v1/issues", tags=["issues"])
 
