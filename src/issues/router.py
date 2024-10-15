@@ -22,25 +22,25 @@ class UpdateIssueRequest(BaseModel):
     title: str | None = None
 
 
-@router.post("/issues")
+@router.post("/")
 def create_issue(data: CreateIssueRequest):
     """create issue"""
     return issues_controller.create_issue({"title": data.title})
 
 
-@router.get("/issues")
+@router.get("/")
 def get_issues():
     """get issues"""
     return []
 
 
-@router.get("/issues/{issue_id}")
-def get_issue(issue_id: int):
+@router.get("/{issue_id}")
+def get_issue(issue_id: str):
     """get issue"""
-    return {"id": issue_id}
+    return issues_controller.get_issue(issue_id)
 
 
-@router.patch("/issues/{issue_id}")
+@router.patch("/{issue_id}")
 def update_issue(issue_id: int, data: UpdateIssueRequest | None):
     """update issue"""
     if data.title is None:
@@ -48,7 +48,7 @@ def update_issue(issue_id: int, data: UpdateIssueRequest | None):
     return {"id": issue_id, "title": data.title}
 
 
-@router.delete("/issues/{issue_id}")
+@router.delete("/{issue_id}")
 def delete_issue(issue_id: int):
     """delete issue"""
     return {"id": issue_id}
