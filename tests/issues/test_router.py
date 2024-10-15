@@ -56,9 +56,24 @@ def test_update_issue(test_client: TestClient):
     assert response.json() == {"id": 1, "title": "test"}
 
 
-def test_delete_issue(test_client: TestClient):
+def test_delete_issue_fail_404(test_client: TestClient):
     """test delete issue"""
     response = test_client.delete(f"{ISSUES_ENDPOINT}/2")
 
+    assert response.status_code == 404
+    assert response.json() == {"detail": "Not found"}
+
+
+def test_delete_issue_success(test_client: TestClient):
+    """test delete issue success"""
+    response = test_client.post(f"{ISSUES_ENDPOINT}", json={"title": "test 1"})
+    issue = response.json()
+    issue_id = issue.get("id")
+
+    response = test_client.delete(f"{ISSUES_ENDPOINT}/{issue_id}")
     assert response.status_code == 200
-    assert response.json() == {"id": 2}
+    assert response.json() == issue
+
+    response = test_client.delete(f"{ISSUES_ENDPOINT}/{issue_id}")
+    assert response.status_code == 404
+    assert response.json() == {"detail": "Not found"}

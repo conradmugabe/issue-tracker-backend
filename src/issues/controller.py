@@ -38,3 +38,12 @@ class IssuesController:
                 return issue
 
         raise HTTPException(status_code=404, detail="Not found")
+
+    def delete_issue(self, issue_id: str) -> Issue:
+        """delete issue"""
+        for index, issue in enumerate(self.__issues):
+            if issue["id"] == issue_id:
+                del self.__issues[index]
+                return issue
+
+        raise HTTPException(status_code=404, detail="Not found")

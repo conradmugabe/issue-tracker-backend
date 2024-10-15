@@ -49,6 +49,6 @@ def update_issue(issue_id: int, data: UpdateIssueRequest | None):
 
 
 @router.delete("/{issue_id}")
-def delete_issue(issue_id: int):
+def delete_issue(issue_id: str):
     """delete issue"""
-    return {"id": issue_id}
+    return issues_controller.delete_issue(issue_id)
