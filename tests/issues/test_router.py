@@ -43,17 +43,29 @@ def test_get_issue_success(test_client: TestClient):
     assert response.json() == issue
 
 
-def test_update_issue(test_client: TestClient):
-    """test update issue"""
+def test_update_issue_fail_404(test_client: TestClient):
+    """test update issue fail 404"""
     response = test_client.patch(f"{ISSUES_ENDPOINT}/1", json={})
 
-    assert response.status_code == 200
-    assert response.json() == {"id": 1}
+    assert response.status_code == 404
+    assert response.json() == {"detail": "Not found"}
 
-    response = test_client.patch(f"{ISSUES_ENDPOINT}/1", json={"title": "test"})
+
+def test_update_issue_success(test_client: TestClient):
+    """test update issue success"""
+    response = test_client.post(f"{ISSUES_ENDPOINT}", json={"title": "test 1"})
+    issue = response.json()
+    issue_id = issue.get("id")
+
+    response = test_client.patch(
+        f"{ISSUES_ENDPOINT}/{issue_id}", json={"title": "updated test 1"}
+    )
+    updated_issue = response.json()
 
     assert response.status_code == 200
-    assert response.json() == {"id": 1, "title": "test"}
+    assert issue["id"] == updated_issue["id"]
+    assert issue["title"] != updated_issue["title"]
+    assert updated_issue["title"] == "updated test 1"
 
 
 def test_delete_issue_fail_404(test_client: TestClient):

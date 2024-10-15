@@ -6,6 +6,12 @@ from uuid import uuid4 as uuid
 from fastapi import HTTPException
 
 
+class UpdateIssue(TypedDict):
+    """update issue"""
+
+    title: str | None = None
+
+
 class CreateIssue(TypedDict):
     """create issue"""
 
@@ -36,6 +42,15 @@ class IssuesController:
         for issue in self.__issues:
             if issue["id"] == issue_id:
                 return issue
+
+        raise HTTPException(status_code=404, detail="Not found")
+
+    def update_issue(self, issue_id: str, data: UpdateIssue) -> Issue:
+        """update issue"""
+        for index, issue in enumerate(self.__issues):
+            if issue["id"] == issue_id:
+                self.__issues[index] = {**issue, **data}
+                return self.__issues[index]
 
         raise HTTPException(status_code=404, detail="Not found")
 

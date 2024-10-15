@@ -41,11 +41,9 @@ def get_issue(issue_id: str):
 
 
 @router.patch("/{issue_id}")
-def update_issue(issue_id: int, data: UpdateIssueRequest | None):
+def update_issue(issue_id: str, data: UpdateIssueRequest | None):
     """update issue"""
-    if data.title is None:
-        return {"id": issue_id}
-    return {"id": issue_id, "title": data.title}
+    return issues_controller.update_issue(issue_id=issue_id, data={"title": data.title})
 
 
 @router.delete("/{issue_id}")
