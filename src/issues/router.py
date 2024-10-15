@@ -3,10 +3,12 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
 
+from src.issues.service import IssuesService
 from src.issues.controller import IssuesController
 
 
-issues_controller = IssuesController()
+issues_service = IssuesService()
+issues_controller = IssuesController(service=issues_service)
 router = APIRouter(prefix="/api/v1/issues", tags=["issues"])
 
 
