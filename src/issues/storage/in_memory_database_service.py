@@ -7,6 +7,7 @@ from src.issues.storage.database_service import (
     SaveIssue,
     Issue,
     UpdateIssue,
+    IssueQuery,
 )
 
 
@@ -22,6 +23,10 @@ class IssuesInMemoryDatabaseService(DatabaseService):
         self.__issues.append(issue)
 
         return issue
+
+    def get_issues(self, query: IssueQuery) -> list[Issue]:
+        """get issues"""
+        return []
 
     def get_issue_by_id(self, issue_id: str) -> Issue | None:
         """get issue by id"""

@@ -23,12 +23,24 @@ class Issue(TypedDict):
     title: str
 
 
+class IssueQuery(TypedDict):
+    """issue query"""
+
+    skip: int
+    limit: int
+    search: str
+
+
 class DatabaseService(ABC):
     """database service"""
 
     @abstractmethod
     def save_issue(self, data: SaveIssue) -> Issue:
         """save issue"""
+
+    @abstractmethod
+    def get_issues(self, query: IssueQuery) -> list[Issue]:
+        """get issues"""
 
     @abstractmethod
     def get_issue_by_id(self, issue_id: str) -> Issue | None:
