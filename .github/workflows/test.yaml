@@ -13,16 +13,8 @@ jobs:
       - name: Checkout 🛎
         uses: actions/checkout@v4
 
-      - name: Install dependencies ⚙️
-        uses: actions/setup-python@v5
-        with:
-            python-version: '3.12.4'
+      - name: Build docker image 👷⚙️
+        run: make build
 
-      - name: Install dependencies ⚙️
-        run: pip install pipenv
-
-      - name: Install dependencies 👨‍✈️🧳
-        run: pipenv install
-
-      - name: Run tests 🧪
-        run: pipenv run pytest -svv --cov=src/ tests
+      - name: Run unit tests 👨‍🔬🧪
+        run: make test-unit
