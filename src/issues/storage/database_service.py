@@ -28,7 +28,7 @@ class IssueQuery(TypedDict):
 
     skip: int
     limit: int
-    search: str
+    search: str | None
 
 
 class DatabaseService(ABC):

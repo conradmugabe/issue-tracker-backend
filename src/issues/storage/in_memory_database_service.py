@@ -26,7 +26,17 @@ class IssuesInMemoryDatabaseService(DatabaseService):
 
     def get_issues(self, query: IssueQuery) -> list[Issue]:
         """get issues"""
-        return []
+        skip = query.get("skip")
+        limit = query.get("limit")
+        search = query.get("search")
+        queried_issues = self.__issues
+
+        if search:
+            queried_issues = [
+                issue for issue in queried_issues if search in issue.get("title")
+            ]
+
+        return queried_issues[skip : skip + limit]
 
     def get_issue_by_id(self, issue_id: str) -> Issue | None:
         """get issue by id"""

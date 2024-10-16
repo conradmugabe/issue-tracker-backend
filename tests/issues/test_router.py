@@ -25,7 +25,7 @@ def test_get_issues(test_client: TestClient):
 
 def test_get_issues_with_params(test_client: TestClient):
     """test get issues with params"""
-    response = test_client.get(f"{ISSUES_ENDPOINT}/?skip=20&limit=20&search=test")
+    response = test_client.get(f"{ISSUES_ENDPOINT}/?skip=0&limit=20&search=test")
 
     assert response.status_code == 200
     assert response.json() == []
