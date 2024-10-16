@@ -25,4 +25,4 @@ jobs:
         run: pipenv install
 
       - name: Run tests 🧪
-        run: pytest -svv --cov=src/ tests
+        run: pipenv run pytest -svv --cov=src/ tests
