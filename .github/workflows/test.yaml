@@ -21,5 +21,8 @@ jobs:
       - name: Install dependencies ⚙️
         run: pip install pipenv
 
+      - name: Install dependencies 👨‍✈️🧳
+        run: pipenv install
+
       - name: Run tests 🧪
         run: pytest -svv --cov=src/ tests
