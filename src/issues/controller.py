@@ -25,6 +25,23 @@ class Issue(CreateIssue):
     id: str
 
 
+class IssueQuery(TypedDict):
+    """issue query"""
+
+    skip: int = None
+    limit: int = None
+    search: str = None
+
+    @classmethod
+    def create(cls, skip: int = None, limit: int = None, search: str = None):
+        """create issue query"""
+        skip = 0 if skip is None else skip
+        limit = 10 if limit is None else limit
+        search = "" if search is None else search
+
+        return IssueQuery(skip=skip, limit=limit, search=search)
+
+
 class IssuesController:
     """issues controller"""
 
@@ -36,6 +53,14 @@ class IssuesController:
         issue = self.__service.create_issue({"title": data.get("title")})
 
         return issue
+
+    def get_issues(self, query: IssueQuery) -> list[Issue]:
+        """get issues"""
+        query = IssueQuery.create(
+            skip=query.get("skip"), limit=query.get("limit"), search=query.get("search")
+        )
+        print(query)
+        return []
 
     def get_issue(self, issue_id: str) -> Issue:
         """get issue"""

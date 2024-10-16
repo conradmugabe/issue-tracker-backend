@@ -33,9 +33,11 @@ def create_issue(data: CreateIssueRequest):
 
 
 @router.get("/")
-def get_issues():
+def get_issues(skip: int = None, limit: int = None, search: str = None):
     """get issues"""
-    return []
+    return issues_controller.get_issues(
+        {"skip": skip, "limit": limit, "search": search}
+    )
 
 
 @router.get("/{issue_id}")
