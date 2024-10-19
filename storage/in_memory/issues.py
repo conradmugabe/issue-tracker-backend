@@ -1,28 +1,22 @@
 """issues in memory database service"""
 
-from uuid import uuid4 as uuid
-
-from src.issues.storage.database_service import (
-    DatabaseService,
-    SaveIssue,
+from models.issues import (
+    Storage,
     Issue,
-    UpdateIssue,
     IssueQuery,
+    UpdateIssue,
 )
 
 
-class IssuesInMemoryDatabaseService(DatabaseService):
-    """issues in memory database service"""
+class IssueStorage(Storage):
+    """Issues in memory database service"""
 
-    def __init__(self, issues: list[Issue] = None) -> None:
-        self.__issues = [] if issues is None else issues
+    def __init__(self) -> "IssueStorage":
+        self.__issues = []
 
-    def save_issue(self, data: SaveIssue) -> Issue:
+    def save_issue(self, issue: Issue):
         """save issue"""
-        issue: Issue = {"id": str(uuid()), "title": data.get("title")}
         self.__issues.append(issue)
-
-        return issue
 
     def get_issues(self, query: IssueQuery) -> list[Issue]:
         """get issues"""
@@ -44,22 +38,28 @@ class IssuesInMemoryDatabaseService(DatabaseService):
             if issue["id"] == issue_id:
                 return issue
 
-        return None
+        raise FileNotFoundError(
+            f"issue with id {issue_id} not found"
+        )  # or handle in chosen error handling style
 
-    def update_issue_by_id(self, issue_id: str, data: UpdateIssue) -> Issue | None:
+    def update_issue_by_id(self, issue_id: str, data: UpdateIssue):
         """update issue by id"""
         for index, issue in enumerate(self.__issues):
             if issue["id"] == issue_id:
                 self.__issues[index] = {**issue, **data}
-                return self.__issues[index]
+                return None
 
-        return None
+        raise FileNotFoundError(
+            f"issue with id {issue_id} not found"
+        )  # or handle in chosen error handling style
 
-    def delete_issue_by_id(self, issue_id: str) -> Issue | None:
+    def delete_issue_by_id(self, issue_id: str):
         """delete issue by id"""
         for index, issue in enumerate(self.__issues):
             if issue["id"] == issue_id:
                 del self.__issues[index]
-                return issue
+                return None
 
-        return None
+        raise FileNotFoundError(
+            f"issue with id {issue_id} not found"
+        )  # or handle in chosen error handling style

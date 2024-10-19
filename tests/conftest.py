@@ -3,7 +3,7 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from src.server import http
+from service.server import http
 
 
 @pytest.fixture
