@@ -28,8 +28,8 @@ def main() -> FastAPI:
 
     # Initialize the services
     issues_service = IssueService(
-        issue_storage=issue_storage,
-        issue_validator=issue_validator,
+        storage=issue_storage,
+        validator=issue_validator,
         id_generator=uuid_generator,
     )
 

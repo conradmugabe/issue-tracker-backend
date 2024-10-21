@@ -1,18 +1,16 @@
 """Issue service"""
 
 from models.issues import (
-    Service,
     Validator,
     Storage,
     Issue,
     IssueQuery,
-    CreateIssue,
     UpdateIssue,
 )
 from models.common import IdGenerator
 
 
-class IssueService(Service):
+class IssueMethods():
     """Issue service"""
 
     def __init__(
@@ -24,22 +22,6 @@ class IssueService(Service):
         self.storage = storage
         self.validator = validator
         self.id_generator = id_generator
-
-    def create_issue(self, data: CreateIssue) -> Issue:
-        """create issue"""
-        valid = self.validator.validate_create_issue(data)
-        if not valid:
-            raise ValueError(
-                "invalid issue data"
-            )  # or handle in chosen error handling style
-
-        issue = Issue()
-        issue.id = self.id_generator.generate()
-        issue.title = f"t-{data.title}"
-
-        self.storage.save_issue(issue)
-
-        return issue
 
     def get_issues(self, query: IssueQuery) -> list[Issue]:
         """get issues"""

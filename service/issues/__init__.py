@@ -1,1 +1,1 @@
-from .issues import IssueService
+from .service import IssueService
