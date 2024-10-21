@@ -35,7 +35,7 @@ class IssueService(Service):
 
         issue = Issue()
         issue.id = self.id_generator.generate()
-        issue.title = data.title
+        issue.title = f"t-{data.title}"
 
         self.storage.save_issue(issue)
 

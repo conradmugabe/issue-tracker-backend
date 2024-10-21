@@ -4,7 +4,8 @@ from server.http.handlers.users.router import UsersRouter
 
 
 def combine_routers(
-    issues_router: IssuesRouter, users_router: UsersRouter
+    issues_router: IssuesRouter,
+    users_router: UsersRouter,
 ) -> APIRouter:
     api_router = APIRouter()
     api_router.include_router(issues_router.get_router())
