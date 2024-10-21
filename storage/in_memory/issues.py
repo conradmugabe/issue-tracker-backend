@@ -30,7 +30,10 @@ class IssueStorage(Storage):
                 issue for issue in queried_issues if search in issue.get("title")
             ]
 
-        return queried_issues[skip : skip + limit]
+        s = skip
+        e = skip + limit
+
+        return queried_issues[s:e]
 
     def get_issue_by_id(self, issue_id: str) -> Issue | None:
         """get issue by id"""
